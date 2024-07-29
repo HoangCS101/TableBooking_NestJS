@@ -8,6 +8,7 @@ import { User } from './entities/user.entity';
   imports: [TypeOrmModule.forFeature([User])],
   controllers: [UsersController],
   providers: [UsersService],
-  exports: [UsersService] // Export so that whatever uses this module can also use what UsersService has to offer
+  exports: [UsersService]
+  // Add the UsersService to the exports array of the @Module decorator so that it is visible outside this module (we'll soon use it in our AuthService).
 })
-export class UsersModule {}
+export class UsersModule { }

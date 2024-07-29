@@ -4,9 +4,11 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { BookingsModule } from './bookings/bookings.module';
-// import { User } from './users/entities/user.entity';
-// import { Booking } from './bookings/entities/booking.entity';
 import { AuthModule } from './auth/auth.module';
+import { RolesModule } from './roles/roles.module';
+// import { AuthGuard } from './auth/auth.guard';
+// import { RolesGuard } from './roles/role.guard';
+// import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -17,15 +19,25 @@ import { AuthModule } from './auth/auth.module';
       username: 'root',
       password: '',
       database: 'tb_nestjs',
-      // entities: [User, Booking],
       autoLoadEntities: true,
       synchronize: true,
     }),
     UsersModule,
     BookingsModule,
     AuthModule,
+    RolesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: AuthGuard,
+    // },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RolesGuard,
+    // },
+  ],
 })
 export class AppModule {}
