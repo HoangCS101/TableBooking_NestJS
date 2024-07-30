@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Delete,
   HttpCode,
   HttpStatus,
   Post,
@@ -17,12 +18,11 @@ import { Roles } from 'src/roles/roles.decorator';
 import { Role } from 'src/roles/entities/role.entity';
 import { RolesGuard } from 'src/roles/role.guard';
 import { PermissionsGuard } from './permissions.guard';
+import { RolesService } from 'src/roles/roles.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private authService: AuthService,
-  ) {}
+  constructor(private authService: AuthService) {}
 
   // @Public()
   @UseGuards(LocalAuthGuard)
@@ -33,10 +33,33 @@ export class AuthController {
   }
 
   @UseGuards(AuthenticatedGuard, RolesGuard)
-  @Roles('Admin')
+  // @Roles('Admin','User')
+  @SetMetadata('roles', ['Admin'])
   // @SetMetadata('permissions', ['read:profile'])
   @Get('profile')
-  getProfile(@Request() req): string {
+  getProfile(@Request() req): Promise<string> {
     return req.user;
   }
+
+  // @UseGuards(AuthenticatedGuard)
+  // @Delete('logout')
+  // @HttpCode(HttpStatus.OK)
+  // logout(@Request() req): void {
+  //   // Passport usually attaches a 'logout' method to the request object
+  //   req.logout((err) => {
+  //     if (err) {
+  //       console.error('Error logging out:', err);
+  //       throw new Error('Could not log out.');
+  //     }
+  //     // Destroy the session
+  //     req.session.destroy((err) => {
+  //       if (err) {
+  //         console.error('Error destroying session:', err);
+  //         throw new Error('Could not log out.');
+  //       }
+  //       // Optionally, send a response message or redirect
+  //       return { msg: 'Logged out successfully!' };
+  //     });
+  //   });
+  // }
 }

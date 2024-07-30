@@ -10,6 +10,7 @@ import { SessionSerializer } from './session.serializer';
 
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from 'src/roles/role.guard';
+import { RolesModule } from 'src/roles/roles.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { RolesGuard } from 'src/roles/role.guard';
     //   signOptions: { expiresIn: '60s' },
     // }),
     UsersModule,
+    RolesModule,
     PassportModule.register({ session: true })
   ],
   providers: [

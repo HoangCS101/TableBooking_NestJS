@@ -44,4 +44,17 @@ export class UsersService {
   async exist(username: string): Promise<User | undefined> {
     return this.usersRepository.findOneBy({ userName: username });
   }
+
+  async roles(id: number): Promise<any> {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      relations: ['roles'],
+    });
+
+    if (user && user.roles) {
+      return user.roles.map(role => role.roleName); // Map roles to their names
+    }
+
+    return [];
+  }
 }

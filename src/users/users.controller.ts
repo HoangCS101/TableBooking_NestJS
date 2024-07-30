@@ -1,9 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, SetMetadata } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { Roles } from 'src/roles/roles.decorator';
 import { RolesGuard } from 'src/roles/role.guard';
 
 @Controller('users')
@@ -17,7 +16,8 @@ export class UsersController {
 
   @Get()
   @UseGuards(RolesGuard)
-  @Roles('Admin')
+  // @Roles('Admin')
+  @SetMetadata('roles', ['Admin'])
   findAll() {
     return this.usersService.findAll();
   }
