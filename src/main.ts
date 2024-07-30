@@ -12,10 +12,10 @@ async function bootstrap() {
 
   app.use(
     session({
-      secret: 'keyboard cat', // to env
+      secret: 'keyboard cat', // better put this in .env
       resave: false,
       saveUninitialized: false,
-      cookie: { maxAge: 3600000 },
+      cookie: { maxAge: 3600000 }, // in miliseconds, thats 1hr
     }),
   );
 

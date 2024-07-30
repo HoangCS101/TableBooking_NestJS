@@ -20,7 +20,4 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   readonly password: string;
-
-  @IsBoolean()
-  readonly isActive?: boolean; // Optional field with a default value
 }

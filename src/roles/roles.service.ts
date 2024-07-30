@@ -20,8 +20,8 @@ export class RolesService {
     return `This action returns all roles`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} role`;
+  findOne(id: number): Promise<Role | null> {
+    return this.rolesRepository.findOneBy({ id });
   }
 
   update(id: number, updateRoleDto: UpdateRoleDto) {

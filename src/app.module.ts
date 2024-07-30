@@ -6,9 +6,6 @@ import { UsersModule } from './users/users.module';
 import { BookingsModule } from './bookings/bookings.module';
 import { AuthModule } from './auth/auth.module';
 import { RolesModule } from './roles/roles.module';
-// import { AuthGuard } from './auth/auth.guard';
-// import { RolesGuard } from './roles/role.guard';
-// import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -22,22 +19,12 @@ import { RolesModule } from './roles/roles.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    UsersModule,
-    BookingsModule,
     AuthModule,
     RolesModule,
+    UsersModule,
+    BookingsModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: AuthGuard,
-    // },
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: RolesGuard,
-    // },
-  ],
+  providers: [AppService],
 })
 export class AppModule {}
