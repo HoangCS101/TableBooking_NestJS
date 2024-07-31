@@ -9,6 +9,7 @@ import {
   Request,
   SetMetadata,
   UseGuards,
+  Redirect,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
@@ -28,38 +29,40 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   // @HttpCode(HttpStatus.OK)
   @Post('login')
+  @Redirect('/app/dashboard')
   login(@Request() req): any {
     return { msg: 'Logged in!' };
   }
 
+  // @UseGuards(AuthenticatedGuard)
   @UseGuards(AuthenticatedGuard, RolesGuard)
   // @Roles('Admin','User')
   @SetMetadata('roles', ['Admin'])
-  // @SetMetadata('permissions', ['read:profile'])
   @Get('profile')
+  // @SetMetadata('permissions', ['read:profile'])
   getProfile(@Request() req): Promise<string> {
     return req.user;
   }
 
-  // @UseGuards(AuthenticatedGuard)
-  // @Delete('logout')
-  // @HttpCode(HttpStatus.OK)
-  // logout(@Request() req): void {
-  //   // Passport usually attaches a 'logout' method to the request object
-  //   req.logout((err) => {
-  //     if (err) {
-  //       console.error('Error logging out:', err);
-  //       throw new Error('Could not log out.');
-  //     }
-  //     // Destroy the session
-  //     req.session.destroy((err) => {
-  //       if (err) {
-  //         console.error('Error destroying session:', err);
-  //         throw new Error('Could not log out.');
-  //       }
-  //       // Optionally, send a response message or redirect
-  //       return { msg: 'Logged out successfully!' };
-  //     });
-  //   });
-  // }
+  @UseGuards(AuthenticatedGuard)
+  @Delete('logout')
+  async logout(@Request() req): Promise<any> {
+    return new Promise((resolve, reject) => {
+      req.logout(async (err) => {
+        if (err) {
+          console.error('Error logging out:', err);
+          reject(new Error('Could not log out.'));
+        } else {
+          req.session.destroy((err) => {
+            if (err) {
+              console.error('Error destroying session:', err);
+              reject(new Error('Could not log out.'));
+            } else {
+              resolve({ msg: 'Logged out successfully!' });
+            }
+          });
+        }
+      });
+    });
+  }
 }
