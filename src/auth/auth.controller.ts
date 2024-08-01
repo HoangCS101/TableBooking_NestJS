@@ -34,6 +34,11 @@ export class AuthController {
     return { msg: 'Logged in!' };
   }
 
+  @Post('register')
+  register(@Request() req): any {
+    return { msg: 'R in!' };
+  }
+
   // @UseGuards(AuthenticatedGuard)
   @UseGuards(AuthenticatedGuard, RolesGuard)
   // @Roles('Admin','User')
@@ -44,8 +49,9 @@ export class AuthController {
     return req.user;
   }
 
-  @UseGuards(AuthenticatedGuard)
-  @Delete('logout')
+  // @UseGuards(AuthenticatedGuard)
+  @Get('logout')
+  @Redirect('/app')
   async logout(@Request() req): Promise<any> {
     return new Promise((resolve, reject) => {
       req.logout(async (err) => {

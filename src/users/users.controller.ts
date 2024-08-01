@@ -1,25 +1,41 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, SetMetadata } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, SetMetadata, Render, Req, Redirect } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { RolesGuard } from 'src/roles/role.guard';
+import { UserValidator } from 'src/validators/user.validator';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
+  // @Redirect('/users')
+  async create(@Body() createUserDto: CreateUserDto): Promise<any> {
+    const errors: string[] = UserValidator.validate(createUserDto);
+    if (errors.length > 0) {
+      return errors;
+    }
     return this.usersService.create(createUserDto);
   }
 
-  @Get()
-  @UseGuards(RolesGuard)
-  // @Roles('Admin')
-  @SetMetadata('roles', ['Admin'])
-  findAll() {
-    return this.usersService.findAll();
+  // @Get()
+  // // @UseGuards(RolesGuard)
+  // // @Roles('Admin')
+  // // @SetMetadata('roles', ['Admin'])
+  // findAll() {
+  //   return this.usersService.findAll();
+  // }
+
+  @Get('/')
+  @Render('create_user')
+  async index(@Req() request) {
+    const viewData = [];
+    viewData['title'] = 'Create User';
+    return {
+      viewData: viewData,
+    };
   }
 
   @Get(':id')

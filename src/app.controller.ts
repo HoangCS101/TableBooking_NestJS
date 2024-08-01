@@ -4,9 +4,7 @@ import { Get, Controller, Render } from '@nestjs/common';
 export class AppController {
   @Get()
   @Render('index')
-  root() {
-    return { message: 'Hello world!' };
-  }
+  index() {}
 
   @Get('login')
   @Render('auth/login')
@@ -16,9 +14,13 @@ export class AppController {
   @Render('auth/register')
   register() {}
 
-  @Get('/dashboard')
+  @Get('dashboard')
   @Render('dashboard')
   dashboard() {
-    return { message: 'Hello world!' };
+    const viewData = [];
+    viewData['title'] = 'Dashboard';
+    return {
+      viewData: viewData,
+    };
   }
 }
