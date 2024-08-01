@@ -3,7 +3,7 @@ import { Get, Controller, Render } from '@nestjs/common';
 @Controller('app')
 export class AppController {
   @Get()
-  @Render('layout')
+  @Render('index')
   root() {
     return { message: 'Hello world!' };
   }
@@ -12,8 +12,12 @@ export class AppController {
   @Render('auth/login')
   login() {}
 
-  @Get('dashboard')
-  @Render('app/dashboard')
+  @Get('register')
+  @Render('auth/register')
+  register() {}
+
+  @Get('/dashboard')
+  @Render('dashboard')
   dashboard() {
     return { message: 'Hello world!' };
   }
