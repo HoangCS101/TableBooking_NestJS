@@ -20,18 +20,22 @@ import { Role } from 'src/roles/entities/role.entity';
 import { RolesGuard } from 'src/roles/role.guard';
 import { PermissionsGuard } from './permissions.guard';
 import { RolesService } from 'src/roles/roles.service';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  // @Public()
-  @UseGuards(LocalAuthGuard)
+  // @Public() // In case some guards are turned on globally
+  // @UseGuards(LocalAuthGuard)
   // @HttpCode(HttpStatus.OK)
+  @UseGuards(LocalAuthGuard)
   @Post('login')
-  @Redirect('/app/dashboard')
+  // @Redirect('/app/dashboard')
   login(@Request() req): any {
-    return { msg: 'Logged in!' };
+    // return { msg: 'Logged in!' };
+    return this.authService.login(req.user);
   }
 
   @Post('register')
@@ -40,12 +44,13 @@ export class AuthController {
   }
 
   // @UseGuards(AuthenticatedGuard)
-  @UseGuards(AuthenticatedGuard, RolesGuard)
+  // @UseGuards(AuthenticatedGuard, RolesGuard)
   // @Roles('Admin','User')
-  @SetMetadata('roles', ['Admin'])
+  // @SetMetadata('roles', ['Admin'])
+  @UseGuards(JwtAuthGuard)
   @Get('profile')
   // @SetMetadata('permissions', ['read:profile'])
-  getProfile(@Request() req): Promise<string> {
+  getProfile(@Request() req) {
     return req.user;
   }
 
