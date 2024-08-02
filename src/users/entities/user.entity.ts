@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Role } from 'src/roles/entities/role.entity';
 
 @Entity()
@@ -6,7 +14,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToMany(() => Role)
+  @ManyToMany(() => Role, role => role.users, { onDelete: 'CASCADE' })
   @JoinTable()
   roles: Role[];
 
@@ -16,12 +24,18 @@ export class User {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column({ unique: true })
   userName: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
   password: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

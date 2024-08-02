@@ -7,7 +7,9 @@ import { AppModule } from './app.module';
 import * as hbs from 'hbs';
 import * as hbsUtils from 'hbs-utils';
 import * as fs from 'fs';
+import * as dotenv from "dotenv";
 
+dotenv.config();
 async function bootstrap() {
   const httpsOptions = {
     key: fs.readFileSync('./src/cert/key.pem'),
@@ -34,6 +36,8 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   hbs.registerPartials(join(__dirname, '..', 'views/layouts'));
   hbsUtils(hbs).registerWatchedPartials(join(__dirname, '..', 'views/layouts'));
+  hbs.registerPartials(join(__dirname, '..', 'views/partials'));
+  hbsUtils(hbs).registerWatchedPartials(join(__dirname, '..', 'views/partials'));
   app.setViewEngine('hbs');
 
   await app.listen(3000);

@@ -15,9 +15,10 @@ import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
 
 import { Roles } from 'src/roles/roles.decorator';
+import { Public } from './auth.decorator';
 
 import { JwtAuthGuard } from './jwt-auth.guard';
-// import { AuthGuard } from '@nestjs/passport';
+import { AuthGuard } from '@nestjs/passport';
 // import { AuthenticatedGuard } from './authenticated.guard';
 import { RolesGuard } from 'src/roles/role.guard';
 import { PermissionsGuard } from './permissions.guard';
@@ -31,10 +32,25 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   // @UseGuards(AuthGuard('local')) // Or straight-up use this
   @Post('login')
-  // @Redirect('/app/dashboard')
+  @Redirect('/app/dashboard')
   login(@Request() req): any {
     // return { msg: 'Logged in!' };
     return this.authService.login(req.user);
+  }
+
+  @Get("/facebook")
+  @UseGuards(AuthGuard("facebook")) // If u dont pass it, FB kicks in
+  async facebookLogin(): Promise<any> {
+    return HttpStatus.OK;
+  }
+
+  @Get("/facebook/redirect")
+  @UseGuards(AuthGuard("facebook"))
+  async facebookLoginRedirect(@Request() req): Promise<any> {
+    return {
+      statusCode: HttpStatus.OK,
+      data: req.user,
+    };
   }
 
   @Post('register')

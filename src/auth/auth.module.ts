@@ -10,6 +10,7 @@ import { AuthController } from './auth.controller';
 import { LocalStategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { jwtConstants } from './constants';
+import { FacebookStrategy } from './facebook.strategy';
 // import { SessionSerializer } from './session.serializer';
 
 @Module({
@@ -25,7 +26,7 @@ import { jwtConstants } from './constants';
     }),
   ],
   // providers: [AuthService, LocalStategy, SessionSerializer],
-  providers: [AuthService, LocalStategy,JwtStrategy],
+  providers: [AuthService, LocalStategy, JwtStrategy, FacebookStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })

@@ -11,7 +11,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  // @Redirect('/users')
+  @Redirect('/users')
   async create(@Body() createUserDto: CreateUserDto): Promise<any> {
     const errors: string[] = UserValidator.validate(createUserDto);
     if (errors.length > 0) {
@@ -28,13 +28,14 @@ export class UsersController {
   //   return this.usersService.findAll();
   // }
 
-  @Get('/')
-  @Render('create_user')
+  @Get()
+  @Render('users_management')
   async index(@Req() request) {
     const viewData = [];
-    viewData['title'] = 'Create User';
+    viewData['title'] = 'User';
     return {
       viewData: viewData,
+      userData: await this.usersService.findAll(),
     };
   }
 
