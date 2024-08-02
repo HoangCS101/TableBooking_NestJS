@@ -11,6 +11,6 @@ import { User } from './entities/user.entity';
   providers: [UsersService],
   exports: [UsersService]
   // Add the UsersService to the exports array of the @Module decorator
-  // so that it is visible outside this module (we'll soon use it in our AuthService).
+  // so that it is visible outside this module (will soon use it in our AuthService).
 })
 export class UsersModule { }
