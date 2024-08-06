@@ -31,10 +31,9 @@ export class AuthController {
   // @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
   // @UseGuards(AuthGuard('local')) // Or straight-up use this
-  @Post('login')
+  @Post('/login')
   @Redirect('/app/dashboard')
   login(@Request() req): any {
-    // return { msg: 'Logged in!' };
     return this.authService.login(req.user);
   }
 
